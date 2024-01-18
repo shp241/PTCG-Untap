@@ -1,1 +1,156 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" /> 
+    <title>PTCG-Untap</title>
+<script>
+   function transform(){
+     var dic = {
+		"PR-BLW":["BWP","BW",2],
+		BWP:["BWP","BW",2],
+		BLW:["BW1","",0],
+		EPO:["BW2","",0],
+		NVI:["BW3","",0],
+		NXD:["BW4","",0],
+		DEX:["BW5","",0],
+		DRX:["BW6","",0],
+		DRV:["DV1","",0],
+		BCR:["BW7","",0],
+		PLS:["BW8","",0],
+		PLF:["BW9","",0],
+		PLB:["BW10","",0],
+		LTR:["BW11","",0],
+		
+		"PR-XY":["XYP","XY",2],
+		XYP:["XYP","XY",2],
+		KSS:["XY0","",0],
+		XY:["XY1","",0],
+		FLF:["XY2","",0],
+		FFI:["XY3","",0],
+		PHF:["XY4","",0],
+		PRC:["XY5","",0],
+		DCR:["DC1","",0],
+		ROS:["XY6","",0],
+		AOR:["XY7","",0],
+		BKT:["XY8","",0],
+		BKP:["XY9","",0],
+		GEN:["G1","",0],
+		FCO:["XY10","",0],
+		STS:["XY11","",0],
+		EVO:["XY12","",0],
+		
+		"PR-SM":["SMP","SM",2],
+		SMP:["SMP","SM",2],
+		SUM:["SM1","",0],
+		GRI:["SM2","",0],
+		BUS:["SM3","",0],
+		SLG:["SM35","",0],
+		CIN:["SM4","",0],
+		UPR:["SM5","",0],
+		FLI:["SM6","",0],
+		CES:["SM7","",0],
+		DRM:["SM75","",0],
+		LOT:["SM8","",0],
+		TEU:["SM9","",0],
+		DET:["DET1","",0],
+		UNB:["SM10","",0],
+		UNM:["SM11","",0],
+		HIF:["SM115","",0],
+		CEC:["SM12","",0],
+		
+		"PR-SW":["SWSHP","SWSH",3],
+		SSP:["SWSHP","SWSH",3],
+		SSH:["SWSH1","",0],
+		RCL:["SWSH2","",0],
+		DAA:["SWSH3","",0],
+		CPA:["SWSH35","",0],
+		VIV:["SWSH4","",0],
+		SHF:["SWSH45","",0],
+		BST:["SWSH5","",0],
+		CRE:["SWSH6","",0],
+		EVS:["SWSH7","",0],
+		CEL:["CEL25","",0],
+		FST:["SWSH8","",0],
+		BRS:["SWSH9","",0],
+		ASR:["SWSH10","",0],
+		PGO:["PGO","",0],
+		LOR:["SWSH11","",0],
+		SIT:["SWSH12","",0],
+		CRZ:["SWSH12PT5","",0],
+		
+		"PR-SV":["SVP","",0],
+		SVP:["SVP","",0],
+		SVI:["SV1","",0],
+		PAL:["SV2","",0],
+		OBF:["SV3","",0],
+		MEW:["SV3PT5","",0],
+		PAR:["SV4","",0],
+	 }
+	 var ws = "";
+	 var ls = document.getElementById("ls").value;
+	 ls = ls.trim();
+	 var ln = ls.split("\n");
+	 console.log(ln);
+     var td = "";
+	 for(n in ln){
+		var i = ln[n];
+		i = i.replace("amp;","");
+		i = i.replace("♢","◇");
+		console.log(i);
+		if(i.startsWith("//") || i.length < 3){
+			continue;
+		}
+		var k = i.lastIndexOf(" ");
+		if(k < 0){
+			continue;
+		}
+		var s2 = i.slice(k + 1,i.length);
+		i = i.slice(0,k);
+		var k2 = i.lastIndexOf(" ");
+		if(k2 < 0){
+			continue;
+		}
+		var s1 = i.slice(k2 + 1,i.length);
+		i = i.slice(0,k2);
+		if(s1 == "Energy"){
+			td += i + " " + s1 + " (SM)\n";
+			continue;
+		}
+		var d = dic[s1];
+		if(d == undefined || d.length < 2){
+			ws += ln[n] + " | ";
+			continue;
+		}
+		if(s2.length < d[2]){
+			s2 = "0" + s2;
+		}
+		if(s2.length < d[2]){
+			s2 = "0" + s2;
+		}
+		s2 = d[1] + s2;
+		s1 = d[0];
+		var a = i + " (" + s1 + "-" + s2 + ")\n";
+		td += a;
+	 }
+	 var u = document.getElementById("us");
+	 u.value = td;
+	 var w = document.getElementById("warn");
+	 if(ws.length>0){
+		w.innerHTML = ws + " Not Found.";
+	 }else{
+		w.innerHTML = "Transform Success."
+	 }
+   }
+</script>
+</head>
+<body>
 <h1>Limitless to Untap PTCG Transformer</h1>
+<p>Limitless code</p>
+<textarea id="ls" rows="20" cols="30"></textarea>
+<p id="warn"></p>
+<input type="button" value="Transform" onclick="transform();"> 
+<p>Untap code</p>
+<textarea id="us" rows="20" cols="30"></textarea>
+</body>
+</html>
